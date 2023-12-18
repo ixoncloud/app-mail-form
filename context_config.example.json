@@ -1,0 +1,8 @@
+{
+  "values": {
+    "smtp_server": "smtp.gmail.com",
+    "smtp_ssl_port": "465",
+    "smtp_user": "john.doe@email.com",
+    "smtp_password": ""
+  }
+}
