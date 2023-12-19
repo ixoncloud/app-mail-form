@@ -1,0 +1,41 @@
+{
+  "main": "app-mail-form.min.js",
+  "version": "1",
+  "sheetSettings": {
+    "defaultCols": 2,
+    "defaultRows": 1,
+    "minCols": 2,
+    "minRows": 1
+  },
+  "cardSettings": {
+    "minHeight": 44
+  },
+  "inputs": [
+    {
+      "key": "header",
+      "type": "Group",
+      "label": "Info",
+      "children": [
+        {
+          "key": "title",
+          "type": "String",
+          "label": "Title",
+          "placeholder": "Leave empty for no title"
+        },
+        {
+          "key": "subtitle",
+          "type": "String",
+          "label": "Subtitle",
+          "placeholder": "Leave empty for no subtitle"
+        }
+      ]
+    },
+    {
+      "key": "subject",
+      "type": "String",
+      "label": "Subject",
+      "required": true,
+      "defaultValue": "Send message"
+    }
+  ]
+}
