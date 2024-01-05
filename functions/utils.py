@@ -38,10 +38,10 @@ def send_message(
     """
 
     combined_message = (
-        f"{message} \n\n"
-        f"This message was sent by {name} ({email_address}) \n"
-        f"From device: {context.agent_or_asset.name},"
-        f" with publicId: {context.agent_or_asset.public_id}"
+        f"{message}\n\n\n"
+        f"Message sent by: {name} ({email_address})\n"
+        f"Device: {context.agent_or_asset.name}\n"
+        f"Device public ID: {context.agent_or_asset.public_id}"
     )
 
     msg = MIMEText(combined_message)
@@ -64,8 +64,12 @@ def send_message(
 
 def validate_config(context: FunctionContext) -> MailConfig | ErrorResponse:
     """
-    Load and validate the config of the cloud function
+    Load and validate the config of the cloud function.
+    Also checks if the agent or asset is selected.
     """
+    if not context.agent and not context.asset:
+        return ErrorResponse("No device selected")
+
     if not all(
         [
             context.config.get("smtp_server"),
