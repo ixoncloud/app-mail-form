@@ -35,7 +35,8 @@
       "type": "String",
       "label": "Subject",
       "required": true,
-      "defaultValue": "Send message"
+      "defaultValue": "Send message",
+      "translate": false
     }
   ]
 }

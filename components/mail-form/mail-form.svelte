@@ -11,6 +11,7 @@
   let height: number | null = null;
   let client: BackendComponentClient;
   let loading = false;
+  let disabled = false;
   let emailMessage = "";
   let subject = "";
 
@@ -19,6 +20,10 @@
   $: header = context ? context.inputs.header : undefined;
 
   onMount(async () => {
+    if (context.mode === "edit") {
+      disabled = true;
+    }
+
     client = context.createBackendComponentClient();
     subject = context.inputs.subject;
 
@@ -44,6 +49,7 @@
           type: "Text",
           label: "Enter your message",
           required: true,
+          translate: false,
         },
       ],
       submitButtonText: "Send Message",
@@ -98,7 +104,7 @@
       <button
         class="button primary {isShallow ? ' small-button' : ''}"
         on:click={openEmailDialog}
-        disabled={loading}>{subject}</button
+        disabled={loading || disabled}>{subject}</button
       >
     {:else}
       <p>Sending...</p>
