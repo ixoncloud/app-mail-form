@@ -1,9 +1,6 @@
 <script lang="ts">
-  import type {
-    ComponentContext,
-    BackendComponentClient,
-  } from "@ixon-cdk/types";
-  import { onMount } from "svelte";
+  import type { ComponentContext, BackendComponentClient } from '@ixon-cdk/types';
+  import { onMount } from 'svelte';
 
   export let context: ComponentContext;
 
@@ -12,23 +9,23 @@
   let client: BackendComponentClient;
   let loading = false;
   let disabled = false;
-  let emailMessage = "";
-  let subject = "";
+  let emailMessage = '';
+  let subject = '';
 
   $: hasHeader = header && (header.title || header.subtitle) && !isShallow;
   $: isShallow = height !== null ? height <= 60 : false;
   $: header = context ? context.inputs.header : undefined;
 
   onMount(async () => {
-    if (context.mode === "edit") {
+    if (context.mode === 'edit') {
       disabled = true;
     }
 
     client = context.createBackendComponentClient();
     subject = context.inputs.subject;
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
+    const resizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
         height = entry.contentRect.height;
       });
     });
@@ -45,14 +42,14 @@
       title: subject,
       inputs: [
         {
-          key: "message",
-          type: "Text",
-          label: "Enter your message",
+          key: 'message',
+          type: 'Text',
+          label: 'Enter your message',
           required: true,
           translate: false,
         },
       ],
-      submitButtonText: "Send Message",
+      submitButtonText: 'Send Message',
     });
 
     if (result) {
@@ -64,23 +61,23 @@
   async function sendEmail() {
     loading = true;
     try {
-      const response = await client.call("send_email", {
+      const response = await client.call('send_email', {
         subject: subject,
         message: emailMessage,
       });
-      if (response.data.status === "success") {
+      if (response.data.status === 'success') {
         await context.openAlertDialog({
-          title: "Success",
-          message: "Your message has been sent successfully.",
+          title: 'Success',
+          message: 'Your message has been sent successfully.',
         });
       } else {
-        throw new Error(response.data.message || "Failed to send message.");
+        throw new Error(response.data.message || 'Failed to send message.');
       }
     } catch (error: Error | any) {
       await context.openAlertDialog({
-        title: "Error",
+        title: 'Error',
         message:
-          error.message || "An error occurred while sending your message.",
+          error.message || 'An error occurred while sending your message.',
       });
     } finally {
       loading = false;
@@ -103,7 +100,7 @@
     {#if !loading}
       <button
         class="button primary {isShallow ? ' small-button' : ''}"
-        on:click={openEmailDialog}
+        on:click|stopPropagation={openEmailDialog}
         disabled={loading || disabled}>{subject}</button
       >
     {:else}
