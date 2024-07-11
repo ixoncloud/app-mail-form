@@ -67,7 +67,6 @@ def send_message(
 def validate_config(context: FunctionContext) -> MailConfig | ErrorResponse:
     """
     Load and validate the config of the cloud function.
-    Also checks if the agent or asset is selected.
     """
 
     if not all(
