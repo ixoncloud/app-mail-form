@@ -40,17 +40,19 @@ def send_message(
     combined_message = (
         f"{message}\n\n\n"
         f"Message sent by: {name} ({email_address})\n"
-        f"Device: {context.agent_or_asset.name}\n"
-        f"Device public ID: {context.agent_or_asset.public_id}"
     )
+
+    if context.agent or context.asset:
+        combined_message += (
+            f"Device: {context.agent_or_asset.name}\n"
+            f"Device public ID: {context.agent_or_asset.public_id}"
+        )
 
     msg = MIMEText(combined_message)
 
     msg["Subject"] = subject
     msg["From"] = config.smtp_user
     msg["To"] = config.smtp_user
-
-    server = smtplib.SMTP_SSL(config.smtp_server, config.smtp_ssl_port)
 
     try:
         with smtplib.SMTP_SSL(config.smtp_server, config.smtp_ssl_port) as server:
@@ -65,10 +67,7 @@ def send_message(
 def validate_config(context: FunctionContext) -> MailConfig | ErrorResponse:
     """
     Load and validate the config of the cloud function.
-    Also checks if the agent or asset is selected.
     """
-    if not context.agent and not context.asset:
-        return ErrorResponse("No device selected")
 
     if not all(
         [
