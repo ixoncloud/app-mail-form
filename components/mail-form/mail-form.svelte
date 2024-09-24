@@ -16,7 +16,7 @@
   $: isShallow = height !== null ? height <= 60 : false;
   $: header = context ? context.inputs.header : undefined;
 
-  onMount(async () => {
+  onMount(() => {
     if (context.mode === 'edit') {
       disabled = true;
     }
