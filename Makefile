@@ -98,7 +98,7 @@ else
 endif
 
 ./venv/pip-dev.done: $(PYTHON_BIN) requirements*.txt
-	@echo Installing application dependencies 
+	@echo Installing application dependencies
 	$(PYTHON_BIN) -m pip install --requirement requirements-dev.txt
 	echo > $@
 

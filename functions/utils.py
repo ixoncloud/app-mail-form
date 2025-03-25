@@ -1,5 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
+from ssl import SSLError
 
 from ixoncdkingress.function.context import FunctionContext
 
@@ -55,7 +56,14 @@ def send_message(
     msg["To"] = config.smtp_user
 
     try:
+        # Try to do SMTP via SSL
         with smtplib.SMTP_SSL(config.smtp_server, config.smtp_ssl_port) as server:
+            server.login(config.smtp_user, config.smtp_password)
+            server.send_message(msg)
+    except SSLError:
+        # Fallback to TLS over SMTP
+        with smtplib.SMTP(config.smtp_server, config.smtp_ssl_port) as server:
+            server.starttls()
             server.login(config.smtp_user, config.smtp_password)
             server.send_message(msg)
     except Exception as e:
